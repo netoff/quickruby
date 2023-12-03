@@ -37,8 +37,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "colorize"
 
   spec.add_development_dependency "bundler", "~> 2.2"
-  spec.add_development_dependency "rake", "~> 13.0"
-  spec.add_development_dependency "minitest", "~> 5.0"
   spec.add_development_dependency "standard", "~> 1.3"
 
   # For more information and examples about making a new gem, check out our

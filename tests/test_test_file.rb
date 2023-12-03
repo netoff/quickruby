@@ -37,3 +37,15 @@ test "it can not have multiple tests with same name" do
 
   assert err.message == "test `pass` already defined"
 end
+
+test "it count exception within test as failure" do
+  test_file = <<-TEST_FILE
+    test "pass" do
+      raise "fail"
+    end
+  TEST_FILE
+
+  test_file_run = TestFile.run(test_file)
+
+  assert test_file_run.failures == 1
+end

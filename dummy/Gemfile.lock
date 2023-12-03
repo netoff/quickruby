@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    quickruby (0.1.4)
+    quickruby (0.1.6)
       activesupport (~> 7.1)
       colorize
 
