@@ -16,16 +16,16 @@ module Quickruby
 
         print "Running tests...\n"
 
-        test = Tests.new.run ARGV[1]
+        tests = Tests.new.run ARGV[1]
 
-        print "Success🎉".colorize(:green) if test.failures == 0
+        print "Success🎉".colorize(:green) if tests.failures == 0
 
-        puts test.summary
+        puts tests.summary
 
-        exit 1 if test.failures > 0
+        exit 1 if tests.failures > 0
       else
         if $0 == "app.rb"
-          warn "Command not found: #{command}"
+          $stderr.puts "Command not found: #{command}"
 
           exit 1
         end

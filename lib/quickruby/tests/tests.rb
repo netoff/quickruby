@@ -38,7 +38,7 @@ module Quickruby
         if failure
           kaller = failure.original_caller
           file, line = kaller[0].split(":")
-          warn "#{failure.message}, error in #{file}:#{line} in `tests #{name}`"
+          $stderr.puts "#{failure.message}, error in #{file}:#{line} in `tests #{name}`"
         else
           print ".".colorize(:green)
         end
