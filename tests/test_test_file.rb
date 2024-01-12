@@ -1,10 +1,10 @@
-# test "it can have multimple tests" do
+# tests "it can have multimple tests" do
 #   test_file = <<-TEST_FILE
-#     test "pass" do
+#     tests "pass" do
 #       assert true
 #     end
 #
-#     test "pass1" do
+#     tests "pass1" do
 #       assert true
 #     end
 #   TEST_FILE
@@ -16,13 +16,13 @@
 #   assert test_file_run.failures == 0
 # end
 #
-# test "it can not have multiple tests with same name" do
+# tests "it can not have multiple tests with same name" do
 #   test_file = <<-TEST_FILE
-#     test "pass" do
+#     tests "pass" do
 #       assert true
 #     end
 #
-#     test "pass" do
+#     tests "pass" do
 #       assert true
 #     end
 #   TEST_FILE
@@ -35,10 +35,10 @@
 #     err = e
 #   end
 #
-#   assert err.message == "test `pass` already defined"
+#   assert err.message == "tests `pass` already defined"
 # end
 
-test "it count exception within test as failure" do
+test "it count exception within tests as failure" do
   test_file = <<-TEST_FILE
     test "pass" do
       raise "fail"

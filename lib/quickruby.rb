@@ -12,11 +12,11 @@ module Quickruby
 
       case command
       when "tests"
-        require_relative "quickruby/test/test"
+        require_relative "quickruby/tests/tests"
 
         print "Running tests...\n"
 
-        test = Test.new.run ARGV[1]
+        test = Tests.new.run ARGV[1]
 
         print "Success🎉".colorize(:green) if test.failures == 0
 

@@ -43,11 +43,22 @@ module Quickruby
     end
 
     def test(name, &block)
-      raise "test `#{name}` already defined" if @test_cases[name]
+      raise "tests `#{name}` already defined" if @test_cases[name]
 
       block.instance_exec(self) do |run|
-        define_singleton_method(:assert) do |predicate|
+        define_singleton_method(:assert) do |*args|
           original_caller = caller(1..1)
+
+          if args.size == 1
+            predicate = args.first
+          elsif args.size == 2 && args.each { |arg| arg.is_a?(String) }
+            original, expected = args
+            unless (predicate = original.include?(expected))
+              $stderr.puts "Expected #{original.inspect} to include #{expected.inspect}".colorize(:red)
+            end
+          else
+            raise ArgumentError.new("unsupported arguments to `assert`")
+          end
 
           run.assertions += 1
           raise Failure.new(original_caller) unless predicate

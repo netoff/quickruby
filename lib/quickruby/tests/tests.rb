@@ -6,7 +6,7 @@ require "active_support/core_ext/array/wrap"
 require "colorize"
 
 module Quickruby
-  class Test
+  class Tests
     GLOB_PATTERN = "tests/**/test_*.rb"
 
     attr_reader :files, :test_cases, :assertions, :failures
@@ -19,8 +19,8 @@ module Quickruby
     end
 
     def summary
-      "\n\n#{cnt(@files, "test file")}, " \
-        "#{cnt(@test_cases, "test case")}, " \
+      "\n\n#{cnt(@files, "tests file")}, " \
+        "#{cnt(@test_cases, "tests case")}, " \
         "#{cnt(@assertions, "assertion")}, " \
         "#{cnt(@failures, "failure")}"
     end
@@ -32,19 +32,17 @@ module Quickruby
     def do_test_run(file)
       pathname = Pathname.new(file)
 
-      print pathname.basename.to_s.colorize(:blue)
+      # print pathname.basename.to_s.colorize(:blue)
 
       test_run = TestFile.run(pathname.read, pathname.to_s) do |name, failure|
         if failure
           kaller = failure.original_caller
           file, line = kaller[0].split(":")
-          warn "#{failure.message}, error in #{file}:#{line} in `test #{name}`"
+          warn "#{failure.message}, error in #{file}:#{line} in `tests #{name}`"
         else
-          print "."
+          print ".".colorize(:green)
         end
       end
-
-      puts
 
       @test_cases += test_run.test_cases.size
       @assertions += test_run.assertions
