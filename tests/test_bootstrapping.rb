@@ -22,7 +22,7 @@ end
 test "running tests" do
   Open3.popen3("ruby app.rb tests") do |_, stdout, stderr, wait_thr|
     assert stderr.read.empty?
-    assert stdout.read.include?("Running tests...")
+    assert stdout.readlines.first, "Running tests:"
 
     assert wait_thr.value.success?
   end

@@ -2,38 +2,44 @@
 
 require_relative "quickruby/version"
 
+require 'benchmark'
+
 module Quickruby
   # Do we need this?
   # class Error < StandardError; end
+  class Runner
+    attr_reader :tests
 
-  def self.run
-    if ARGV.size > 0
-      command = ARGV[0]
+    def run
+      if ARGV.size > 0
+        command = ARGV[0]
 
-      case command
-      when "tests"
-        require_relative "quickruby/tests/tests"
+        case command
+        when "tests"
+          require_relative "quickruby/tests/tests"
 
-        print "Running tests...\n"
+          puts "Running tests:\n"
 
-        tests = Tests.new.run ARGV[1]
+          benchmark = Benchmark.realtime { @tests = Tests.new.run ARGV[1] }
 
-        print "Success🎉".colorize(:green) if tests.failures == 0
+          puts "Success🎉".colorize(:green) if tests.failures == 0
 
-        puts tests.summary
+          puts " (#{benchmark.round(2)}s)"
+          puts tests.summary
 
-        exit 1 if tests.failures > 0
-      else
-        if $0 == "app.rb"
-          $stderr.puts "Command not found: #{command}"
+          exit 1 if tests.failures > 0
+        else
+          if $0 == "app.rb"
+            $stderr.puts "Command not found: #{command}"
 
-          exit 1
+            exit 1
+          end
         end
+      else
+        puts "Runnig app..."
       end
-    else
-      puts "Runnig app..."
     end
   end
 end
 
-Quickruby.run
+Quickruby::Runner.new.run
