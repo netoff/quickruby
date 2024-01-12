@@ -11,7 +11,7 @@ module Quickruby
       command = ARGV[0]
 
       case command
-      when 'tests'
+      when "tests"
         require_relative "quickruby/test/test"
 
         print "Running tests..."
@@ -24,8 +24,8 @@ module Quickruby
 
         exit 1 if test.failures > 0
       else
-        if "app.rb" == $0
-          STDERR.puts "Command not found: #{command}"
+        if $0 == "app.rb"
+          warn "Command not found: #{command}"
 
           exit 1
         end

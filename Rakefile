@@ -9,4 +9,8 @@ end
 
 require "standard/rake"
 
-task default: %i[test standard]
+task :tests do
+  fork { exec("ruby app.rb tests") }
+end
+
+task default: %i[tests]

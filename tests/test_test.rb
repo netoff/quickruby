@@ -1,7 +1,7 @@
-require 'open3'
+require "open3"
 
 test "it loads test files recursively" do
-  Dir.chdir('dummy') do
+  Dir.chdir("dummy") do
     test = Quickruby::Test.new.run
 
     assert test.files == 2

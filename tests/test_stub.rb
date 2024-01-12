@@ -1,7 +1,8 @@
 # Do not pollute global namespace with class name
 klass = Class.new do
-  def self.foo()= "foo"
-  def foo()= "#foo"
+  def self.foo = "foo"
+
+  def foo = "#foo"
 end
 
 test "it can stub class methods" do
@@ -42,9 +43,7 @@ test "it can stub instance method on any object of a class" do
 end
 
 test "it can not stub_any_instance on a object" do
-  begin
-    Object.new.stub_any_instance(:foo, "bar") {}
-  rescue => e
-    assert e.is_a?(NoMethodError)
-  end
+  Object.new.stub_any_instance(:foo, "bar") {}
+rescue => e
+  assert e.is_a?(NoMethodError)
 end
