@@ -9,10 +9,10 @@ test "around is called if there is at least one tes" do
     end
   TEST_FILE
 
-  test_file_round = TestFile.run(test_file)
+  test_file_around = TestFile.run(test_file)
 
-  assert test_file_round.assertions == 1
-  assert test_file_round.failures == 0
+  assert test_file_around.assertions == 1
+  assert test_file_around.failures == 0
 end
 
 test "around is not called if no tests" do

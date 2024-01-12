@@ -12,7 +12,7 @@ module Quickruby
     attr_accessor :test_cases, :assertions, :failures
 
     def self.run(code, filename = nil)
-      filename ||= caller[0].split(":").first
+      filename ||= caller(1..1).first.split(":").first
       new.tap do |run|
         run.instance_eval(code, filename, 1)
 
@@ -47,14 +47,10 @@ module Quickruby
 
       block.instance_exec(self) do |run|
         define_singleton_method(:assert) do |predicate|
-          # puts "caller => #{caller}"
-          original_caller = caller
+          original_caller = caller(1..1)
 
           run.assertions += 1
-          unless predicate
-            # puts "raising failure with original caller #{original_caller}"
-            raise Failure.new(original_caller)
-          end
+          raise Failure.new(original_caller) unless predicate
         end
 
         define_singleton_method(:run_case) do
