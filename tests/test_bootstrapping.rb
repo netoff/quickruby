@@ -28,6 +28,24 @@ test "running tests" do
   end
 end
 
+test "running tests not scpeifiying command" do
+  Open3.popen3("ruby app.rb") do |_, stdout, stderr, wait_thr|
+    assert stderr.read.empty?
+    assert stdout.readlines.first, "Running tests:"
+
+    assert wait_thr.value.success?
+  end
+end
+
+test "running build" do
+  Open3.popen3("ruby app.rb build") do |_, stdout, stderr, wait_thr|
+    assert stderr.read.empty?
+    assert stdout.readlines.first, "Building..."
+
+    assert wait_thr.value.success?
+  end
+end
+
 test "pass" do
   Open3.popen3("ruby app.rb tests tests/test_pass.rb") do |_, stdout, stderr, wait_thr|
     assert stderr.read.empty?
