@@ -32,12 +32,19 @@ module Quickruby
     def do_test_run(file)
       pathname = Pathname.new(file)
 
-      puts "Running #{pathname.basename}".colorize(:blue)
-      test_run = TestFile.run(pathname.read) do |name, failure|
-        kaller = failure.original_caller
-        # puts kaller.join("\n").colorize(:red)
-        warn "#{failure.message}, error in #{file}:#{kaller[0].split(":")[1]} in `test #{name}`"
+      print pathname.basename.to_s.colorize(:blue)
+
+      test_run = TestFile.run(pathname.read, pathname.to_s) do |name, failure|
+        if failure
+          kaller = failure.original_caller
+          file, line = kaller[0].split(":")
+          warn "#{failure.message}, error in #{file}:#{line} in `test #{name}`"
+        else
+          print "."
+        end
       end
+
+      puts
 
       @test_cases += test_run.test_cases.size
       @assertions += test_run.assertions

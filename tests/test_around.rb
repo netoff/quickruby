@@ -46,5 +46,4 @@ test "around can not be called twice" do
   end
 
   assert err.message == "around already defined"
-  # assert false
 end

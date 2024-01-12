@@ -14,7 +14,7 @@ module Quickruby
       when "tests"
         require_relative "quickruby/test/test"
 
-        print "Running tests..."
+        print "Running tests...\n"
 
         test = Test.new.run ARGV[1]
 

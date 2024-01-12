@@ -11,16 +11,19 @@ module Quickruby
 
     attr_accessor :test_cases, :assertions, :failures
 
-    def self.run(code)
+    def self.run(code, filename = nil)
+      filename ||= caller[0].split(":").first
       new.tap do |run|
-        run.instance_eval(code)
+        run.instance_eval(code, filename, 1)
 
         run.test_cases.each do |name, test|
-          if (a = run.instance_variable_get(:@around))
-            a.call proc { test.run_case }
+          if (around = run.instance_variable_get(:@around))
+            around.call proc { test.run_case }
           else
             test.run_case
           end
+
+          yield(name, nil) if block_given?
         rescue Failure => e
           run.failures += 1
           yield(name, e) if block_given?
@@ -44,9 +47,13 @@ module Quickruby
 
       block.instance_exec(self) do |run|
         define_singleton_method(:assert) do |predicate|
+          # puts "caller => #{caller}"
+          original_caller = caller
+
           run.assertions += 1
           unless predicate
-            raise Failure.new(caller)
+            # puts "raising failure with original caller #{original_caller}"
+            raise Failure.new(original_caller)
           end
         end
 
@@ -54,9 +61,7 @@ module Quickruby
           block.instance_eval(&block)
         rescue => e
           raise if e.is_a?(Failure)
-
-          run.failures += 1
-          raise Failure.new(caller)
+          raise Failure.new(e.backtrace, e.message)
         end
       end
 

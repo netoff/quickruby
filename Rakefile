@@ -10,7 +10,7 @@ end
 require "standard/rake"
 
 task :tests do
-  fork { exec("ruby app.rb tests") }
+  exec("ruby app.rb tests")
 end
 
 task default: %i[tests]

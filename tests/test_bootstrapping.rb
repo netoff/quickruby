@@ -13,7 +13,9 @@ test "running tests with wrong command" do
   # Note it is `tests` not `test`
   Open3.popen3("ruby app.rb test") do |_, _, stderr, wait_thr|
     assert stderr.read.include? "Command not found: test"
-    assert !wait_thr.value.success?
+    process_status = wait_thr.value
+    assert process_status.exited?
+    assert process_status.exitstatus == 1
   end
 end
 
@@ -32,6 +34,7 @@ test "pass" do
     assert stdout.readlines.last.include? "1 test file, 1 test case, 1 assertion, 0 failures"
 
     assert wait_thr.value.success?
+    assert wait_thr.value.exitstatus == 0
   end
 end
 
@@ -47,7 +50,9 @@ end
 test "non existing file" do
   Open3.popen3("ruby app.rb tests tests/non_existing_file.rb") do |_, _, stderr, wait_thr|
     assert stderr.read.include? "No such file or directory @ rb_sysopen - tests/non_existing_file.rb (Errno::ENOENT)"
-    assert !wait_thr.value.success?
+    process_status = wait_thr.value
+    assert process_status.exited?
+    assert process_status.exitstatus == 1
   end
 end
 
@@ -56,6 +61,7 @@ test "empty file" do
     assert stderr.read.empty?
     assert stdout.readlines.last.include? "1 test file, 0 test cases, 0 assertions, 0 failures"
     assert wait_thr.value.success?
+    assert wait_thr.value.exitstatus == 0
   end
 end
 
@@ -65,6 +71,7 @@ test "multiple tests cases" do
     assert stdout.readlines.last.include? "1 test file, 2 test cases, 2 assertions, 0 failures"
 
     assert wait_thr.value.success?
+    assert wait_thr.value.exitstatus == 0
   end
 end
 
@@ -73,6 +80,6 @@ test "multiple test cases with failure" do
     assert stderr.read.include? "Assertion failed, error in test_multiple_fail_cases.rb:6 in `test second fail`"
     assert stdout.readlines.last.include? "1 test file, 3 test cases, 3 assertions, 1 failure"
 
-    assert !wait_thr.value.success?
+    assert wait_thr.value.exitstatus == 1
   end
 end
