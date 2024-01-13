@@ -3,6 +3,7 @@ require_relative 'helpers'
 
 require "active_support/inflector"
 require "active_support/core_ext/array/wrap"
+require "active_support/core_ext/string/filters.rb"
 require "colorize"
 
 module Quickruby

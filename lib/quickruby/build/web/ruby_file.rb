@@ -1,9 +1,11 @@
+require_relative 'node_builder'
+
 module Quickruby
   module Build
     module Web
       class RubyFile
         def self.run(file)
-          builder = Class.new.class_eval(file)
+          builder = NodeBuilder.new.instance_eval(file)
 
           if builder.is_a?(String)
             builder
