@@ -15,3 +15,17 @@ test "it supports simple html tags" do
   assert html, "<body><h1>Hello, World!</h1></body>"
   assert html, "</html>"
 end
+
+test "using unsuporrted tags raises an error" do
+  exception = begin
+    Quickruby::Build::Web::RubyFile.run(<<-RUBY)
+      asdf do 
+        r1 "Hello, World!"
+      end
+    RUBY
+  rescue => e
+    e
+  end
+
+  assert exception.message, "undefined method `asdf' for an instance of Quickruby::Build::Web::NodeBuilder"
+end
