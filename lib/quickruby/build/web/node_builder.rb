@@ -22,7 +22,7 @@ module Quickruby
 
             self
           else
-            super
+            raise "invalid HTML tag `#{method_name}`"
           end
         end
 

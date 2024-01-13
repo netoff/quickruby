@@ -16,7 +16,7 @@ test "it supports simple html tags" do
   assert html, "</html>"
 end
 
-test "using unsuporrted tags raises an error" do
+test "using unsupported tags raises an error" do
   exception = begin
     Quickruby::Build::Web::RubyFile.run(<<-RUBY)
       asdf do 
@@ -27,5 +27,5 @@ test "using unsuporrted tags raises an error" do
     e
   end
 
-  assert exception.message, "undefined method `asdf' for an instance of Quickruby::Build::Web::NodeBuilder"
+  assert exception.message, "invalid HTML tag `asdf`"
 end
