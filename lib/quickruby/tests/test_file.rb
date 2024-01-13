@@ -51,10 +51,19 @@ module Quickruby
 
           if args.size == 1
             predicate = args.first
-          elsif args.size == 2 && args.each { |arg| arg.is_a?(String) }
-            original, expected = args
-            unless (predicate = original.include?(expected))
-              $stderr.puts "Expected #{original.inspect} to include #{expected.inspect}".colorize(:red)
+          elsif args.size == 2
+            if args.all? { |arg| arg.is_a?(String) }
+              original, expected = args
+              unless (predicate = original.include?(expected))
+                $stderr.puts "Expected #{original.inspect} to include #{expected.inspect}".colorize(:red)
+              end
+            elsif args.last.is_a?(Symbol)
+              original, method = args
+              unless (predicate = original.send(method))
+                $stderr.puts "Expected #{original.inspect} to respond to #{method.inspect}".colorize(:red)
+              end
+            else
+              raise ArgumentError.new("unsupported arguments to `assert`")
             end
           else
             raise ArgumentError.new("unsupported arguments to `assert`")

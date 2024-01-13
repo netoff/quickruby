@@ -39,7 +39,7 @@ end
 
 test "running build" do
   Open3.popen3("ruby app.rb build") do |_, stdout, stderr, wait_thr|
-    assert stderr.read.empty?
+    assert stderr.read, :empty?
     assert stdout.readlines.first, "Building..."
 
     assert wait_thr.value.success?
@@ -95,8 +95,8 @@ end
 
 test "multiple tests cases with failure" do
   Open3.popen3("ruby app.rb tests test_multiple_fail_cases.rb") do |_, stdout, stderr, wait_thr|
-    assert stderr.read.include? "Assertion failed, error in test_multiple_fail_cases.rb:6 in `tests second fail`"
-    assert stdout.readlines.last.include? "1 tests file, 3 tests cases, 3 assertions, 1 failure"
+    assert stderr.read, "Assertion failed, error in test_multiple_fail_cases.rb:6 in `tests second fail`"
+    assert stdout.readlines.last, "1 tests file, 3 tests cases, 3 assertions, 1 failure"
 
     assert wait_thr.value.exitstatus == 1
   end

@@ -1,5 +1,5 @@
 require_relative "test_file"
-require_relative "stub"
+require_relative 'helpers'
 
 require "active_support/inflector"
 require "active_support/core_ext/array/wrap"
