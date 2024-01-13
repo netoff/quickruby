@@ -2,7 +2,7 @@ module Quickruby
   module Build
     module Web
       class NodeBuilder
-        TAGS = %i(html head title body h1)
+        VALID_TAGS = eval("%i[#{File.read(File.expand_path("valid_tags.txt", File.dirname(__FILE__)))}]")
 
         attr_reader :children
         def initialize()
@@ -10,7 +10,7 @@ module Quickruby
         end
 
         def method_missing(method_name, *args, &block)
-          if TAGS.include?(method_name)
+          if VALID_TAGS.include?(method_name)
             @children << proc {
               if args.size == 1 && args.first.is_a?(String)
                 "<#{method_name}>#{args.first}</#{method_name}>"
@@ -27,7 +27,7 @@ module Quickruby
         end
 
         def respond_to_missing?(method_name, include_private = false)
-          TAGS.include?(method_name) || super
+          VALID_TAGS.include?(method_name) || super
         end
         def call
           @children.map(&:call).join
