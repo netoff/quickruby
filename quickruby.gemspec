@@ -35,6 +35,7 @@ Gem::Specification.new do |spec|
   # Uncomment to register a new dependency of your gem
   spec.add_dependency "activesupport", "~> 7.1"
   spec.add_dependency "colorize"
+  spec.add_dependency "erubi"
 
   spec.add_development_dependency "bundler", "~> 2.2"
   spec.add_development_dependency "standard", "~> 1.3"

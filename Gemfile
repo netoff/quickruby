@@ -6,7 +6,3 @@ source "https://rubygems.org"
 gemspec
 
 gem "standard", "~> 1.3"
-
-gem "activesupport", "~> 7.1"
-
-gem "colorize"
